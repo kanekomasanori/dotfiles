@@ -1,10 +1,2 @@
-dotfiles
-========
-
-##vim環境ファイル
-・.vimrc
-
-##zsh環境ファイル　
-・.zshrc
-
-
+source ~/.zsh/common.zsh
+source ~/.zsh/local.zsh

@@ -1,22 +1,36 @@
-autoload colors
+# ${fg[...]} や $reset_color をロード
+autoload -U colors; colors
 
-# colors
-case ${UID} in
-  0)
-    PROMPT="%{${fg[cyan]}%}$(echo ${HOST%%.*} | tr '[a-z]' '[A-Z]') %B%{${fg[red]}%}%/#%{${reset_color}%}%b "
-    PROMPT2="%B%{${fg[red]}%}%_#%{${reset_color}%}%b "
-    SPROMPT="%B%{${fg[red]}%}%r is correct? [n,y,a,e]:%{${reset_color}%}%b "
-    ;;
-  *)
-    PROMPT="%{${fg[red]}%}%/%%%{${reset_color}%} "
-    PROMPT="%{${fg[red]}%}%m:%n%{${reset_color}%} "
-    RPROMPT="[%~]"
-    PROMPT2="%{${fg[red]}%}%_%%%{${reset_color}%} "
-    SPROMPT="%{${fg[red]}%}%r is correct? [n,y,a,e]:%{${reset_color}%} "
-    [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] && 
-    PROMPT="%{${fg[cyan]}%}$(echo ${HOST%%.*} | tr '[a-z]' '[A-Z]') ${PROMPT}"
-    ;;
-esac
+function rprompt-git-current-branch {
+        local name st color
+
+        if [[ "$PWD" =~ '/\.git(/.*)?$' ]]; then
+                return
+        fi
+        name=$(basename "`git symbolic-ref HEAD 2> /dev/null`")
+        if [[ -z $name ]]; then
+                return
+        fi
+        st=`git status 2> /dev/null`
+        if [[ -n `echo "$st" | grep "^nothing to"` ]]; then
+                color=${fg[green]}
+        elif [[ -n `echo "$st" | grep "^nothing added"` ]]; then
+                color=${fg[yellow]}
+        elif [[ -n `echo "$st" | grep "^# Untracked"` ]]; then
+                color=${fg_bold[red]}
+        else
+                color=${fg[red]}
+        fi
+
+        # %{...%} は囲まれた文字列がエスケープシーケンスであることを明示する
+        # これをしないと右プロンプトの位置がずれる
+        echo "%{$color%}$name%{$reset_color%} "
+}
+
+# プロンプトが表示されるたびにプロンプト文字列を評価、置換する
+setopt prompt_subst
+
+RPROMPT='[`rprompt-git-current-branch`%~]'
 
 # history
 HISTFILE=~/.zsh/history

@@ -44,12 +44,18 @@ set directory=~/.vim/swap
 " バックアップファイルの場所
 set backupdir=~/.vim/backup
 
+" 自動改行を回避
+set formatoptions=q
+
 " タブ設定
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 set expandtab
 set smarttab
+
+" 自動改行しないように
+set tw=0
 
 " syntaxを有効化
 syntax on

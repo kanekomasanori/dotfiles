@@ -10,19 +10,21 @@ if has('vim_starting')
   call neobundle#rc(expand('~/.vim/bundle'))
 endif
 
-NeoBundle 'git://github.com/Shougo/clang_complete.git'
+NeoBundle 'git://github.com/Shougo/neocomplcache-clang_complete.git'
 NeoBundle 'git://github.com/Shougo/echodoc.git'
 NeoBundle 'git://github.com/Shougo/neocomplcache.git'
 NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
 NeoBundle 'git://github.com/Shougo/unite.vim.git'
 NeoBundle 'git://github.com/Shougo/vim-vcs.git'
 NeoBundle 'git://github.com/Shougo/vimfiler.git'
+NeoBundle 'git://github.com/Shougo/vimshell.git'
 NeoBundle 'git://github.com/Shougo/vinarise.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git'
-NeoBundle 'git://github.com/fuenor/qfixgrep.git'
 NeoBundle 'git://github.com/tpope/vim-rails.git'
 NeoBundle 'git://github.com/vim-ruby/vim-ruby.git'
+NeoBundle 'git://github.com/fuenor/qfixgrep.git'
 NeoBundle 'git://github.com/thinca/vim-quickrun.git'
+NeoBundle 'git://github.com/plasticboy/vim-markdown.git'
 
 filetype plugin on
 filetype indent on

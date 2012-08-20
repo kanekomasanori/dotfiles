@@ -25,6 +25,8 @@ NeoBundle 'git://github.com/vim-ruby/vim-ruby.git'
 NeoBundle 'git://github.com/fuenor/qfixgrep.git'
 NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/plasticboy/vim-markdown.git'
+NeoBundle 'git://github.com/mattn/mkdpreview-vim.git'
+NeoBundle 'git://github.com/mattn/webapi-vim.git'
 
 filetype plugin on
 filetype indent on
@@ -88,8 +90,7 @@ noremap <C-U><C-F> :UniteWithBufferDir -buffer-name=files file<CR>
 noremap <C-U><C-R> :Unite file_mru<CR>
 " レジスタ一覧
 noremap <C-U><C-Y> :Unite -buffer-name=register register<CR>
-" ファイルとバッファ
-noremap <C-U><C-U> :Unite buffer file_mru<CR>
+
 " ESCキーを2回押すと終了する
 au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
 au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
@@ -98,7 +99,9 @@ au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
 set runtimepath+=~/.vim/plugins/qfixapp
 let QFixHowm_Key = 'g'
 let howm_dir             = '~/.vim/howm_dir'
-let howm_filename        = '%Y/%m/%Y-%m-%d-%H%M%S.txt'
+let howm_filename        = '%Y/%m/%Y-%m-%d-%H%M%S.mkd'
 let howm_fileencoding    = 'utf-8'
 let howm_fileformat      = 'unix'
+let QFixHowm_FileType = 'markdown'
+let QFixHowm_Title = '#'
 

@@ -28,6 +28,7 @@ NeoBundle 'git://github.com/plasticboy/vim-markdown.git'
 NeoBundle 'git://github.com/mattn/mkdpreview-vim.git'
 NeoBundle 'git://github.com/mattn/webapi-vim.git'
 NeoBundle 'git://github.com/thinca/vim-fontzoom.git'
+NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
 
 filetype plugin on
 filetype indent on

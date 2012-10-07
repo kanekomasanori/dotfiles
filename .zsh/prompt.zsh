@@ -1,11 +1,3 @@
-# ${fg[...]} や $reset_color をロード
-autoload -U colors; colors
-
-# プロンプトが表示されるたびにプロンプト文字列を評価、置換する
-setopt prompt_subst
-
-# To install source this file from your .zshrc file
-
 # Change this to reflect your installation directory
 export __GIT_PROMPT_DIR=~/.zsh/git-prompt
 # Initialize colors.
@@ -55,7 +47,6 @@ function update_current_git_vars() {
 	GIT_UNTRACKED=$__CURRENT_GIT_STATUS[6]
 	GIT_CLEAN=$__CURRENT_GIT_STATUS[7]
 }
-
 
 git_super_status() {
 	precmd_update_git_vars

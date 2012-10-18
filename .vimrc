@@ -5,30 +5,31 @@ filetype off
 
 " NeoBundle
 if has('vim_starting')
-  set runtimepath+=~/.vim/plugins/neobundle.vim.git/
-
-  call neobundle#rc(expand('~/.vim/bundle'))
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
 
-NeoBundle 'git://github.com/Shougo/neocomplcache-clang_complete.git'
-NeoBundle 'git://github.com/Shougo/echodoc.git'
-NeoBundle 'git://github.com/Shougo/neocomplcache.git'
-NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
-NeoBundle 'git://github.com/Shougo/unite.vim.git'
-NeoBundle 'git://github.com/Shougo/vim-vcs.git'
-NeoBundle 'git://github.com/Shougo/vimfiler.git'
-NeoBundle 'git://github.com/Shougo/vimshell.git'
-NeoBundle 'git://github.com/Shougo/vinarise.git'
-NeoBundle 'git://github.com/Shougo/vimproc.git'
-NeoBundle 'git://github.com/tpope/vim-rails.git'
-NeoBundle 'git://github.com/vim-ruby/vim-ruby.git'
-NeoBundle 'git://github.com/fuenor/qfixgrep.git'
-NeoBundle 'git://github.com/thinca/vim-quickrun.git'
-NeoBundle 'git://github.com/plasticboy/vim-markdown.git'
-NeoBundle 'git://github.com/mattn/mkdpreview-vim.git'
-NeoBundle 'git://github.com/mattn/webapi-vim.git'
-NeoBundle 'git://github.com/thinca/vim-fontzoom.git'
-NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
+call neobundle#rc(expand('~/.vim/bundle/'))
+
+NeoBundle 'Shougo/vimproc.git'
+NeoBundle 'Shougo/neocomplcache-clang_complete.git'
+NeoBundle 'Shougo/echodoc.git'
+NeoBundle 'Shougo/neocomplcache.git'
+NeoBundle 'Shougo/neobundle.vim.git'
+NeoBundle 'Shougo/unite.vim.git'
+NeoBundle 'Shougo/vim-vcs.git'
+NeoBundle 'Shougo/vimfiler.git'
+NeoBundle 'Shougo/vimshell.git'
+NeoBundle 'Shougo/vinarise.git'
+NeoBundle 'tpope/vim-rails.git'
+NeoBundle 'vim-ruby/vim-ruby.git'
+NeoBundle 'fuenor/qfixgrep.git'
+NeoBundle 'thinca/vim-quickrun.git'
+NeoBundle 'plasticboy/vim-markdown.git'
+NeoBundle 'mattn/mkdpreview-vim.git'
+NeoBundle 'mattn/webapi-vim.git'
+NeoBundle 'thinca/vim-fontzoom.git'
+NeoBundle 'Lokaltog/vim-powerline.git'
+NeoBundle 'Shougo/vimfiler.git'
 
 filetype plugin on
 filetype indent on
@@ -92,6 +93,14 @@ noremap <C-U><C-F> :UniteWithBufferDir -buffer-name=files file<CR>
 noremap <C-U><C-R> :Unite file_mru<CR>
 " レジスタ一覧
 noremap <C-U><C-Y> :Unite -buffer-name=register register<CR>
+" 全て
+noremap <C-U><C-A> :Unite UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file<CR>
+
+" -------------------------------------------------
+" VimFiler.vim
+" -------------------------------------------------
+" 画面分割して開く
+noremap <C-F><C-F> :VimFiler -split -simple -winwidth=35 -no-quit<CR>
 
 " ESCキーを2回押すと終了する
 au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>

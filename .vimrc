@@ -20,8 +20,6 @@ NeoBundle 'Shougo/vim-vcs.git'
 NeoBundle 'Shougo/vimfiler.git'
 NeoBundle 'Shougo/vimshell.git'
 NeoBundle 'Shougo/vinarise.git'
-NeoBundle 'tpope/vim-rails.git'
-NeoBundle 'vim-ruby/vim-ruby.git'
 NeoBundle 'fuenor/qfixgrep.git'
 NeoBundle 'thinca/vim-quickrun.git'
 NeoBundle 'plasticboy/vim-markdown.git'
@@ -29,7 +27,17 @@ NeoBundle 'mattn/mkdpreview-vim.git'
 NeoBundle 'mattn/webapi-vim.git'
 NeoBundle 'thinca/vim-fontzoom.git'
 NeoBundle 'Lokaltog/vim-powerline.git'
-NeoBundle 'Shougo/vimfiler.git'
+NeoBundle 'violetyk/cake.vim.git'
+NeoBundle 'taka84u9/unite-git.git'
+NeoBundle 'motemen/git-vim.git'
+NeoBundle 'sgur/unite-git_grep.git'
+NeoBundle 'tpope/vim-haml'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-rails'
+NeoBundle 'vim-ruby/vim-ruby'
+NeoBundle 'kchmck/vim-coffee-script'
+NeoBundle 'csexton/rvm.vim'
+NeoBundle 'ujihisa/rdoc.vim'
 
 filetype plugin on
 filetype indent on
@@ -84,17 +92,25 @@ map <C-K> :tabnew<CR>
 " Unite.vim
 " -------------------------------------------------
 " 入力モードで開始する
-let g:unite_enable_start_insert=0
-" バッファ一覧
-noremap <C-U><C-B> :Unite buffer<CR>
-" ファイル一覧
-noremap <C-U><C-F> :UniteWithBufferDir -buffer-name=files file<CR>
-" 最近使ったファイルの一覧
-noremap <C-U><C-R> :Unite file_mru<CR>
-" レジスタ一覧
-noremap <C-U><C-Y> :Unite -buffer-name=register register<CR>
-" 全て
-noremap <C-U><C-A> :Unite UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file<CR>
+let g:unite_enable_start_insert=1
+
+" buffers
+nnoremap <silent> <C-p> :<C-u>Unite buffer<CR>
+
+" file list
+nnoremap <silent> <C-n> :<C-u>Unite -buffer-name=files git_modified git_untracked git_cached buffer file_mru bookmark file<CR>
+
+" ウィンドウを分割して開く
+au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
+au FileType unite inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
+
+" ウィンドウを縦に分割して開く
+au FileType unite nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')<C-w>L
+au FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
+
+" ESCキーを2回押すと終了する
+au FileType unite nnoremap <silent> <buffer> <ESC><ESC> q
+au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>q
 
 " -------------------------------------------------
 " VimFiler.vim
@@ -102,9 +118,15 @@ noremap <C-U><C-A> :Unite UniteWithBufferDir -buffer-name=files buffer file_mru 
 " 画面分割して開く
 noremap <C-F><C-F> :VimFiler -split -simple -winwidth=35 -no-quit<CR>
 
-" ESCキーを2回押すと終了する
-au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
-au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
+" Fugitive.vim
+nnoremap <silent> <C-@> :call<Space>ToggleGstatus()<CR>
+function! ToggleGstatus()
+  if bufexists(".git/index")
+    execute "bw .git/index"
+  else
+    execute "Gstatus"
+  endif
+endfunction
 
 " qfixApp
 set runtimepath+=~/.vim/plugins/qfixapp

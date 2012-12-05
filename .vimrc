@@ -95,10 +95,10 @@ map <C-K> :tabnew<CR>
 let g:unite_enable_start_insert=1
 
 " buffers
-nnoremap <silent> <C-b> :<C-u>Unite buffer<CR>
+nnoremap <silent> <C-u><C-b> :<C-u>Unite buffer<CR>
 
 " file list
-nnoremap <silent> <C-f> :<C-u>Unite -buffer-name=files git_modified git_untracked git_cached buffer file_mru bookmark file<CR>
+nnoremap <silent> <C-u><C-f> :<C-u>Unite -buffer-name=files git_modified git_untracked git_cached buffer file_mru bookmark file<CR>
 
 " ウィンドウを分割して開く
 au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')

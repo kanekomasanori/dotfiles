@@ -42,6 +42,9 @@ NeoBundle 'ujihisa/rdoc.vim'
 filetype plugin on
 filetype indent on
 
+" フォント設定
+set guifont=Bitstream\ Vera\ Sans\ Mono:h14
+
 " 行番号の設定
 set number
 set ruler

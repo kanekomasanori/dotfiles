@@ -47,6 +47,9 @@ set number
 set ruler
 hi LineNr ctermfg=darkgrey ctermbg=black
 
+" フォント設定
+set guifont=Bitstream\ Vera\ Sans\ Mono:h14
+
 " status lineの表示
 set laststatus=2
 
@@ -63,9 +66,9 @@ set backupdir=~/.vim/backup
 set formatoptions=q
 
 " タブ設定
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
 set expandtab
 set smarttab
 
@@ -87,6 +90,9 @@ set cursorline
 map <C-N> :tabn<CR>
 map <C-P> :tabp<CR>
 map <C-K> :tabnew<CR>
+
+" タブを閉じる
+map <C-Q> :q<CR>
 
 " -------------------------------------------------
 " Unite.vim

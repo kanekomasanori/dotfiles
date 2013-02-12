@@ -27,7 +27,6 @@ NeoBundle 'mattn/mkdpreview-vim.git'
 NeoBundle 'mattn/webapi-vim.git'
 NeoBundle 'thinca/vim-fontzoom.git'
 NeoBundle 'Lokaltog/vim-powerline.git'
-NeoBundle 'violetyk/cake.vim.git'
 NeoBundle 'taka84u9/unite-git.git'
 NeoBundle 'motemen/git-vim.git'
 NeoBundle 'sgur/unite-git_grep.git'
@@ -38,12 +37,10 @@ NeoBundle 'vim-ruby/vim-ruby'
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'csexton/rvm.vim'
 NeoBundle 'ujihisa/rdoc.vim'
+NeoBundle 'vim-scripts/taglist.vim.git'
 
 filetype plugin on
 filetype indent on
-
-" フォント設定
-set guifont=Bitstream\ Vera\ Sans\ Mono:h14
 
 " 行番号の設定
 set number
@@ -108,6 +105,10 @@ nnoremap <silent> <C-u><C-b> :<C-u>Unite buffer<CR>
 
 " file list
 nnoremap <silent> <C-u><C-f> :<C-u>Unite -buffer-name=files git_modified git_untracked git_cached buffer file_mru bookmark file<CR>
+
+" bookmarks
+nnoremap <silent> <C-u><C-k> :<C-u>Unite bookmark<CR>
+
 
 " ウィンドウを分割して開く
 au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')

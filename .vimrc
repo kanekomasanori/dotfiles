@@ -1,5 +1,54 @@
+" 文字コードの自動認識
+if &encoding !=# 'utf-8'
+    set encoding=japan
+    set fileencoding=japan
+endif
+if has('iconv')
+    let s:enc_euc = 'euc-jp'
+    let s:enc_jis = 'iso-2022-jp'
+    " iconvがeucJP-msに対応しているかをチェック
+    if iconv("\x87\x64\x87\x6a", 'cp932', 'eucjp-ms') ==# "\xad\xc5\xad\xcb"
+        let s:enc_euc = 'eucjp-ms'
+        let s:enc_jis = 'iso-2022-jp-3'
+        " iconvがJISX0213に対応しているかをチェック
+    elseif iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
+        let s:enc_euc = 'euc-jisx0213'
+        let s:enc_jis = 'iso-2022-jp-3'
+    endif
+    " fileencodingsを構築
+    if &encoding ==# 'utf-8'
+        let s:fileencodings_default = &fileencodings
+        let &fileencodings = s:enc_jis .','. s:enc_euc .',cp932'
+        let &fileencodings = s:fileencodings_default .','. &fileencodings
+        unlet s:fileencodings_default
+    else
+        let &fileencodings = &fileencodings .','. s:enc_jis
+        set fileencodings+=utf-8,ucs-2le,ucs-2
+        if &encoding =~# '^\(euc-jp\|euc-jisx0213\|eucjp-ms\)$'
+            set fileencodings+=cp932
+            set fileencodings-=euc-jp
+            set fileencodings-=euc-jisx0213
+            set fileencodings-=eucjp-ms
+            let &encoding = s:enc_euc
+            let &fileencoding = s:enc_euc
+        else
+            let &fileencodings = &fileencodings .','. s:enc_euc
+        endif
+    endif
+    " 定数を処分
+    unlet s:enc_euc
+    unlet s:enc_jis
+endif
+" }}}
+
 " vi互換を無効化
 set nocompatible
+
+" 自動読み込み
+augroup vimrc-checktime
+    autocmd!
+    autocmd WinEnter * checktime
+augroup END
 
 filetype off
 
@@ -20,11 +69,11 @@ NeoBundle 'Shougo/vim-vcs.git'
 NeoBundle 'Shougo/vimfiler.git'
 NeoBundle 'Shougo/vimshell.git'
 NeoBundle 'Shougo/vinarise.git'
+NeoBundle 'majutsushi/tagbar.git'
+NeoBundle 'tsukkee/unite-tag.git'
 NeoBundle 'fuenor/qfixgrep.git'
 NeoBundle 'thinca/vim-quickrun.git'
-NeoBundle 'plasticboy/vim-markdown.git'
-NeoBundle 'mattn/mkdpreview-vim.git'
-NeoBundle 'mattn/webapi-vim.git'
+NeoBundle 'tpope/vim-markdown.git'
 NeoBundle 'thinca/vim-fontzoom.git'
 NeoBundle 'Lokaltog/vim-powerline.git'
 NeoBundle 'taka84u9/unite-git.git'
@@ -123,12 +172,15 @@ au FileType unite nnoremap <silent> <buffer> <ESC><ESC> q
 au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>q
 
 " -------------------------------------------------
-" VimFiler.vim
+" vim-fugitive
 " -------------------------------------------------
-" 画面分割して開く
-noremap <C-F><C-F> :VimFiler -split -simple -winwidth=35 -no-quit<CR>
-
-" Fugitive.vim
+nnoremap <Space>gd :<C-u>Gdiff<Enter>
+nnoremap <Space>gs :<C-u>Gstatus<Enter>
+nnoremap <Space>gl :<C-u>Glog<Enter>
+nnoremap <Space>ga :<C-u>Gwrite<Enter>
+nnoremap <Space>gc :<C-u>Gcommit<Enter>
+nnoremap <Space>gC :<C-u>Git commit --amend<Enter>
+nnoremap <Space>gb :<C-u>Gblame<Enter>
 nnoremap <silent> <C-@> :call<Space>ToggleGstatus()<CR>
 function! ToggleGstatus()
   if bufexists(".git/index")
@@ -138,13 +190,51 @@ function! ToggleGstatus()
   endif
 endfunction
 
+" -------------------------------------------------
+" VimFiler.vim
+" -------------------------------------------------
+" 画面分割して開く
+noremap <C-v><C-f> :VimFiler -split -simple -winwidth=35 -no-quit<CR>
+
 " qfixApp
 set runtimepath+=~/.vim/plugins/qfixapp
 let QFixHowm_Key = 'g'
-let howm_dir             = '~/.vim/howm_dir'
-let howm_filename        = '%Y/%m/%Y-%m-%d-%H%M%S.mkd'
+let howm_dir             = '~/howm_dir'
+let howm_filename        = '%Y/%m/%Y-%m-%d-%H%M%S.markdown'
 let howm_fileencoding    = 'utf-8'
 let howm_fileformat      = 'unix'
 let QFixHowm_FileType = 'markdown'
 let QFixHowm_Title = '#'
 
+" -------------------------------------------------
+" Unite-tag
+" -------------------------------------------------
+
+" path にヘッダーファイルのディレクトリを追加することで
+" neocomplcache が include 時に tag ファイルを作成してくれる
+set path+=$LIBSTDCPP
+set path+=$BOOST_LATEST_ROOT
+
+" neocomplcache が作成した tag ファイルのパスを tags に追加する
+function! s:TagsUpdate()
+    " include している tag ファイルが毎回同じとは限らないので毎回初期化
+    setlocal tags=
+    for filename in neocomplcache#sources#include_complete#get_include_files(bufnr('%'))
+        execute "setlocal tags+=".neocomplcache#cache#encode_name('tags_output', filename)
+    endfor
+endfunction
+
+command! -nargs=? PopupTags call <SID>TagsUpdate() |Unite tag:<args>
+
+function! s:get_func_name(word)
+    let end = match(a:word, '<\|[\|(')
+    return end == -1 ? a:word : a:word[ : end-1 ]
+endfunction
+
+" カーソル下のワード(word)で絞り込み
+noremap <silent> g<C-]> :<C-u>execute "PopupTags ".expand('<cword>')<CR>
+
+" カーソル下のワード(WORD)で ( か < か [ までが現れるまでで絞り込み
+" 例)
+" boost::array<std::stirng... → boost::array で絞り込み
+noremap <silent> G<C-]> :<C-u>execute "PopupTags " .substitute(<SID>get_func_name(expand('<cWORD>')), '\:', '\\\:', "g")<CR>

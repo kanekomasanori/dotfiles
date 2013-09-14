@@ -87,6 +87,7 @@ NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'csexton/rvm.vim'
 NeoBundle 'ujihisa/rdoc.vim'
 NeoBundle 'vim-scripts/taglist.vim.git'
+NeoBundle 'terryma/vim-multiple-cursors.git'
 
 filetype plugin on
 filetype indent on
@@ -136,9 +137,9 @@ colorscheme candycode
 set cursorline
 
 " タブ移動など
-map <C-N> :tabn<CR>
-map <C-P> :tabp<CR>
-map <C-K> :tabnew<CR>
+nnoremap <silent><Space>n :tabn<CR>
+nnoremap <silent><Space>p :tabp<CR>
+nnoremap <silent><Space>k :tabnew<CR>
 
 " タブを閉じる
 map <C-Q> :q<CR>
